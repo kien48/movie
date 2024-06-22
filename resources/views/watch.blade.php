@@ -41,7 +41,7 @@
 @else
     btn-outline-danger
 @endif
-">{{$data['tap']}}</a>
+" style="width: 45px;height: 40px">{{$data['tap']}}</a>
                 @endforeach
             </div>
         </div>

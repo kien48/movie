@@ -16,7 +16,7 @@
     @yield('css')
 </head>
 
-<body>
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="50">
 <header id="trangchu">
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top  shadow fw-bold" style="backdrop-filter: blur(10px);">
         <div class="container">
@@ -29,28 +29,31 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('home')}}">Trang chủ</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#phimmoithem">Phim mới thêm</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#phimle">Phim lẻ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#phimbo">Phim bộ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#tv">TV Shows</a>
-                    </li>
+                    @if(Route::CurrentRouteName() == "home")
+                        <li class="nav-item">
+                            <a class="nav-link" href="#phimmoithem">Phim mới thêm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#phimle">Phim lẻ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#phimbo">Phim bộ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#tv">TV Shows</a>
+                        </li>
+                    @endif
+
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="">
-                            <button class="btn btn-outline-danger">Đăng ký</button>
+                        <a class="nav-link" href="{{route('search')}}">
+                            <button class="btn btn-outline-light"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="">
-                            <button class="btn btn-outline-light">Đăng nhập</button>
+                        <a class="nav-link " href="{{route('favourite')}}">
+                            <button class="btn btn-outline-danger"><i class="fa-regular fa-heart"></i></button>
                         </a>
                     </li>
 
@@ -60,11 +63,13 @@
     </nav>
 </header>
 
-@yield('content')
+<div style="min-height: calc(100vh - 190px);margin-top: 90px;">
+    @yield('content')
+</div>
+    <footer class="text-center" >
+        <p>© 2024 KienMovie. All Rights Reserved.</p>
+    </footer>
 
-<footer class="text-center">
-    <p>© 2024 KienMovie. All Rights Reserved.</p>
-</footer>
 </body>
 
 </html>
