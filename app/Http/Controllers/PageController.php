@@ -33,7 +33,7 @@ class PageController extends Controller
             ->take(12)
             ->get();
 
-        return view('home', compact('dataPhimMoiThem', 'dataPhimLe', 'dataPhimBo', 'dataTvShows'));
+        return view('page', compact('dataPhimMoiThem', 'dataPhimLe', 'dataPhimBo', 'dataTvShows'));
     }
 
     public function detail(string $slug)

@@ -15,7 +15,7 @@
                 <h5 class="font-monospace text-light-emphasis mt-3">Thể loại:
                 @if(count($model['catelogue']) >=1)
                         @foreach($model['catelogue'] as $data)
-                            {{$data['ten']}} *
+                           | {{$data['ten']}} |
                         @endforeach
                     @else
                     Đang cập nhật

@@ -10,6 +10,7 @@ use App\Models\Movie;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class MovieController extends Controller
@@ -29,6 +30,32 @@ class MovieController extends Controller
     }
     public function store(Request $request)
     {
+        // Định nghĩa các rules cho validation
+        $validator = Validator::make($request->all(), [
+            'ten' => 'required|string|max:255',
+            'list_id' => 'required|exists:lists,id',
+            'anh' => 'required|url|nullable',
+            'ngon_ngu' => 'required|string|nullable',
+            'so_tap' => 'required|integer|nullable',
+            'chat_luong' => 'required|string|nullable',
+            'dao_dien' => 'required|string|nullable',
+            'dien_vien' => 'required|string|nullable',
+            'nam_phat_hanh' => 'required|string|nullable',
+            'quoc_gia' => 'required|string|nullable',
+            'trang_thai' =>'required|string|nullable',
+            'mo_ta' => 'required|string|nullable',
+            'catelogue_id' => 'required|array', // Giả sử là một mảng các ID
+            'catelogue_id.*' => 'exists:catelogues,id', // Mỗi ID trong mảng phải tồn tại trong bảng catelogues
+        ]);
+
+        // Nếu validation không thành công, quay lại form và hiển thị lỗi
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+
         // Lấy dữ liệu phim, ngoại trừ các trường 'catelogue_id' và 'tap_phim'
         $dataMovie = $request->except('catelogue_id', 'tap_phim');
         $dataMovie['slug'] = Str::slug($dataMovie['ten']); // Thêm \Illuminate\Support\ để sử dụng Str

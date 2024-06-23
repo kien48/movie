@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,8 @@ Route::get('/tim-kiem', [App\Http\Controllers\PageController::class, 'search'])-
 Route::prefix('api')->group(function (){
 
     Route::resource('/movie', MovieController::class);
+    Route::get('/comment/movie/{id}', [CommentController::class, 'index']);
+    Route::resource('/comment', CommentController::class);
 });
 
 

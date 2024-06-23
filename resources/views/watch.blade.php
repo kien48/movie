@@ -21,8 +21,17 @@
                     ● {{$model['ngon_ngu']}} </h5>
                 <h5 class="font-monospace text-light-emphasis mt-3">Số tập: {{$model['so_tap']}} | Hiện
                     tại: {{$model['trang_thai']}} </h5>
-                <h5 class="font-monospace text-light-emphasis mt-3">Thể loại: Gia đình, Bí ẩn</h5>
-                <h5 class="h4 mt-3" data-bs-toggle="tooltip" title="{{$model['mo_ta']}}!">{{substr($model['mo_ta'],0,200)}}... </h4>
+                <h5 class="font-monospace text-light-emphasis mt-3">Thể loại:
+                    @if(count($model['catelogue']) >=1)
+                        @foreach($model['catelogue'] as $data)
+                            {{$data['ten']}} *
+                        @endforeach
+                    @else
+                        Đang cập nhật
+                    @endif
+                </h5>
+                <h5 class="h4 mt-3" data-bs-toggle="tooltip"
+                    title="{{$model['mo_ta']}}!">{{substr($model['mo_ta'],0,200)}}... </h4>
 
                     <div class="d-flex mt-3">
                         <h5 class="font-monospace text-light-emphasis">Diễn viên:</h5>
@@ -52,23 +61,61 @@
             <div class="col-4 form-container">
                 <form action="" method="post">
                     <div class="d-flex">
-                        <textarea name="comment" id="comment" class="form-control1"
-                                  placeholder="Nhập bình luận..."></textarea>
-                        <button type="submit" class="btn btn-outline-danger">Gửi</button>
+                        <textarea name="content" id="comment" class="form-control1"
+                                  placeholder="Nhập bình luận..." ng-model="content"></textarea>
+                        <input type="hidden"  name="name" ng-model="name">
+                        <button type="button" class="btn btn-outline-danger" ng-click="send()">Gửi</button>
                     </div>
                 </form>
             </div>
             <div class="col-8">
-                <div class="comment-container">
-                    <div class="comment-author">Nguyễn Văn A</div>
-                    <div class="comment-text">Đây là nội dung bình luận mẫu.</div>
+                <div class="comment-container" ng-repeat="data in listComments">
+                    <div class="d-flex justify-content-between">
+                        <div class="comment-author">@{{ data.name }}</div>
+                        <div>
+                            <h5>@{{ data.created_at | date:'yyyy-MM-dd HH:mm' }}</h5>
+                        </div>
+                    </div>
+                    <div class="comment-text">@{{ data.content }}</div>
                 </div>
-                <div class="comment-container">
-                    <div class="comment-author">Trần Thị B</div>
-                    <div class="comment-text">Một bình luận khác để minh họa.</div>
-                </div>
-                <!-- Thêm các bình luận khác tại đây -->
             </div>
         </div>
     </div>
+
+    @section('js')
+        <script>
+            viewFunction = function ($scope, $http) {
+                $scope.listComments = [];
+                $scope.content = ''
+                $scope.name = 'Ẩn danh';
+                $scope.getComment = () => {
+                    $http.get('http://movie.test/api/comment/movie/{{ $model['id'] }}')
+                        .then(function (response) {
+                            $scope.listComments = response.data.data;
+                            console.log($scope.listComments);
+                        })
+                        .catch(function (error) {
+                            alert('Đã xảy ra lỗi khi tải dữ liệu');
+                            console.error(error);
+                        });
+                }
+                $scope.getComment()
+                  $scope.send = () => {
+                    $http.post('http://movie.test/api/comment',
+                        {
+                            content : $scope.content,
+                            name : $scope.name,
+                            movie_id : {{ $model['id'] }}
+                        }
+                    )
+                        .then(function (res){
+                            $scope.content = ''
+                            $scope.name = 'Ẩn danh';
+                            $scope.getComment()
+                        })
+                }
+            };
+
+        </script>
+    @endsection
 @endsection

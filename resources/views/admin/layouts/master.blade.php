@@ -14,18 +14,20 @@
 
 </head>
 
-<body class="bg-danger-subtle" ng-app="myApp" ng-controller="myCtrl">
+<body class="bg-light" ng-app="myApp" ng-controller="myCtrl">
 <div class="container">
     <div class="bg-dark" style="height: 100px">
-
+        <h2 class="text-danger text-center">
+            Quản trị KienMovie
+        </h2>
     </div>
     <div class="row">
         <div class="col-4">
             <div class="container mt-3">
-                <h2>Trang quản trị admin</h2>
+                <h2>Menu</h2>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Phim</a>
+                        <a class="nav-link" href="{{route('admin.movies.index')}}">Phim</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Thể loại</a>
