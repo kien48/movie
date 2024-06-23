@@ -13,11 +13,15 @@
                 <h5 class="font-monospace text-light-emphasis mt-3">{{$model['chat_luong']}}  ● {{$model['ngon_ngu']}} </h5>
                 <h5 class="font-monospace text-light-emphasis mt-3">Số tập: {{$model['so_tap']}} | Hiện tại: {{$model['trang_thai']}} </h5>
                 <h5 class="font-monospace text-light-emphasis mt-3">Thể loại:
-                @foreach($model['catelogue'] as $data)
-                    {{$data['ten']}} *
-                @endforeach
+                @if(count($model['catelogue']) >=1)
+                        @foreach($model['catelogue'] as $data)
+                            {{$data['ten']}} *
+                        @endforeach
+                    @else
+                    Đang cập nhật
+                    @endif
                 </h5>
-                <h5 class="h4 mt-3">{{$model['mo_ta']}} </h4>
+                <h5 class="h4 mt-3" data-bs-toggle="tooltip" title="{{$model['mo_ta']}}!">{{substr($model['mo_ta'],0,500)}}... </h4>
                     <div class="d-flex mt-3">
                         <h5 class="font-monospace text-light-emphasis">Diễn viên:</h5>
                         <h5> {{$model['dien_vien']}} </h5>
@@ -92,7 +96,7 @@
                 <div class="row">
                     @foreach($phimLienQuan as $data)
                         <div class="col-6 col-sm-4 col-md-3 col-lg-2 movie-card mb-3 mt-3">
-                            <a href="{{route('detail',$data['slug'])}}" class="nav-link">
+                            <a href="{{route('detail',$data['slug'])}}" class="nav-link" data-bs-toggle="tooltip" title="{{$data['ten']}}">
                                 <img src="{{$data['anh']}}" alt="" class="img-fluid">
                             </a>
                         </div>

@@ -13,10 +13,11 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{asset('/')}}/themes/web phim/public/style.css">
+    <script src="{{asset('/')}}/themes/web phim/public/angular.js"></script>
     @yield('css')
 </head>
 
-<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="50">
+<body ng-app="myApp" ng-controller="myCtrl">
 <header id="trangchu">
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top  shadow fw-bold" style="backdrop-filter: blur(10px);">
         <div class="container">
@@ -26,9 +27,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav" style="margin-left: 10px;">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('home')}}">Trang chủ</a>
-                    </li>
+
                     @if(Route::CurrentRouteName() == "home")
                         <li class="nav-item">
                             <a class="nav-link" href="#phimmoithem">Phim mới thêm</a>
@@ -63,13 +62,27 @@
     </nav>
 </header>
 
-<div style="min-height: calc(100vh - 190px);margin-top: 90px;">
+<div style="min-height: calc(100vh - 190px);margin-top: 90px;" ng-controller="viewCtrl">
     @yield('content')
 </div>
     <footer class="text-center" >
         <p>© 2024 KienMovie. All Rights Reserved.</p>
     </footer>
 
+<script>
+    var myApp = angular.module('myApp',[])
+    myApp.controller('myCtrl',function ($http,$scope){
+
+    })
+
+    var viewFunction = function ($scope){
+
+    }
+</script>
+@yield('js')
+<script>
+    myApp.controller('viewCtrl',viewFunction)
+</script>
 </body>
 
 </html>

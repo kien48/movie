@@ -10,8 +10,9 @@
         <div class="row mt-4">
 
             <div class="col-8">
-                <iframe src="{{$episode['link']}}
-                                " frameborder="0" allowfullscreen width="100%" height="500"></iframe>
+                <iframe src="{{$episode['link']}}" frameborder="0" allowfullscreen loading="lazy" width="100%"
+                        height="500"></iframe>
+
             </div>
 
             <div class="col-4">
@@ -21,7 +22,8 @@
                 <h5 class="font-monospace text-light-emphasis mt-3">Số tập: {{$model['so_tap']}} | Hiện
                     tại: {{$model['trang_thai']}} </h5>
                 <h5 class="font-monospace text-light-emphasis mt-3">Thể loại: Gia đình, Bí ẩn</h5>
-                <h5 class="h4 mt-3">{{$model['mo_ta']}} </h4>
+                <h5 class="h4 mt-3" data-bs-toggle="tooltip" title="{{$model['mo_ta']}}!">{{substr($model['mo_ta'],0,200)}}... </h4>
+
                     <div class="d-flex mt-3">
                         <h5 class="font-monospace text-light-emphasis">Diễn viên:</h5>
                         <h5> {{$model['dien_vien']}} </h5>

@@ -13,7 +13,7 @@
             <div class="row">
                 @foreach(session('favourite') as $data)
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2 movie-card mb-3 mt-3">
-                        <a href="{{route('detail',$data->slug)}}" class="nav-link">
+                        <a href="{{route('detail',$data->slug)}}" class="nav-link" data-bs-toggle="tooltip" title="{{$data->ten}}">
                             <img src="{{$data->anh}}" alt="" class="img-fluid">
                         </a>
                     </div>

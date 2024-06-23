@@ -21,6 +21,8 @@ class Movie extends Model
         'nam_phat_hanh',
         'quoc_gia',
         'trang_thai',
+        'list_id',
+        'mo_ta',
     ];
 
     public function catelogue()

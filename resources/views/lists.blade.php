@@ -13,7 +13,7 @@
                 <div class="row">
                     @foreach($data as $item)
                         <div class="col-6 col-sm-4 col-md-3 col-lg-2 movie-card mb-3 mt-3">
-                            <a href="{{route('detail',$item->slug)}}" class="nav-link">
+                            <a href="{{route('detail',$item->slug)}}" class="nav-link" data-bs-toggle="tooltip" title="{{$item->ten}}">
                                 <img src="{{$item->anh}}" alt="" class="img-fluid">
                             </a>
                         </div>
@@ -21,6 +21,6 @@
                 </div>
             </div>
         </div>
-        {{$data->links('pagination::bootstrap-5')}}
+        {{$data->links()}}
     </div>
 @endsection

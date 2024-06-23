@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +22,23 @@ Route::post('/add-favourite', [App\Http\Controllers\PageController::class, 'addF
 Route::post('/remove-favourite', [App\Http\Controllers\PageController::class, 'removeFavourite'])->name('remove');
 Route::get('/danh-sach-phim/{id}', [App\Http\Controllers\PageController::class, 'danhSachPhim'])->name('lists');
 Route::get('/tim-kiem', [App\Http\Controllers\PageController::class, 'search'])->name('search');
+
+Route::prefix('api')->group(function (){
+
+    Route::resource('/movie', MovieController::class);
+});
+
+
+Route::prefix('admin')
+    ->as('admin.')
+    ->group(function (){
+        Route::prefix('movies')
+            ->as('movies.')
+            ->group(function (){
+                Route::get('/',[\App\Http\Controllers\Admin\MovieController::class,'index'])->name('index');
+                Route::get('create',[\App\Http\Controllers\Admin\MovieController::class,'create'])->name('create');
+                Route::post('store',[\App\Http\Controllers\Admin\MovieController::class,'store'])->name('store');
+
+            });
+
+});
