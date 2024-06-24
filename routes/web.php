@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MovieController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,13 +24,19 @@ Route::post('/add-favourite', [App\Http\Controllers\PageController::class, 'addF
 Route::post('/remove-favourite', [App\Http\Controllers\PageController::class, 'removeFavourite'])->name('remove');
 Route::get('/danh-sach-phim/{id}', [App\Http\Controllers\PageController::class, 'danhSachPhim'])->name('lists');
 Route::get('/tim-kiem', [App\Http\Controllers\PageController::class, 'search'])->name('search');
+Route::post('/mua-phim', [App\Http\Controllers\UserCoinController::class, 'muaPhim'])->name('muaPhim');
+Route::get('/nap-xu', [App\Http\Controllers\UserCoinController::class, 'napXu'])->name('napXu');
 
 Route::prefix('api')->group(function (){
 
     Route::resource('/movie', MovieController::class);
     Route::get('/comment/movie/{id}', [CommentController::class, 'index']);
     Route::resource('/comment', CommentController::class);
+    Route::get('/favourite/{id}', [\App\Http\Controllers\PageController::class, 'apiListFavourite']);
 });
+Auth::routes();
+Route::get('/tai-khoan', [App\Http\Controllers\Auth\HomeController::class, 'index'])->name('index');
+Route::get('/phim-da-mua', [App\Http\Controllers\Auth\HomeController::class, 'purchasedMovies'])->name('purchasedMovies');
 
 
 Route::prefix('admin')
@@ -45,3 +52,5 @@ Route::prefix('admin')
             });
 
 });
+
+

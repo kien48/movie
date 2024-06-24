@@ -40,6 +40,10 @@
                             <input type="text" class="form-control" name="ngon_ngu">
                         </div>
                         <div class="mb-3 col-6">
+                            <label for="pwd" class="form-label">Giá phim:</label>
+                            <input type="text" class="form-control" name="gia">
+                        </div>
+                        <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Số tập:</label>
                             <input type="number" class="form-control" name="so_tap">
                         </div>

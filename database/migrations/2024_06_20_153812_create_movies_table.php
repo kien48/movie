@@ -26,6 +26,7 @@ return new class extends Migration
             $table->text('nam_phat_hanh');
             $table->text('quoc_gia');
             $table->text('trang_thai');
+            $table->bigInteger('gia')->default(0);
             $table->timestamps();
         });
     }

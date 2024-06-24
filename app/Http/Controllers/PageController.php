@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Lists;
 use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
@@ -38,6 +40,7 @@ class PageController extends Controller
 
     public function detail(string $slug)
     {
+
         $model = Movie::query()
             ->with(['catelogue', 'episode'])
             ->where('slug', $slug)
@@ -51,14 +54,35 @@ class PageController extends Controller
             ->where('slug', '!=', $slug)
             ->get()
             ->toArray();
-        $trangThai = false;
-        foreach (session('favourite') as $item) {
-            if ($item['id'] == $model['id']) {
-                $trangThai = true;
+
+        $trangThaiMuaPhim = false;
+
+        $dataUser = [];
+        if(Auth::check()){
+            $dataUser =  User::query()->with(['movies','coin'])->find(Auth::user()->id)->toArray();
+            foreach ($dataUser['movies'] as $item) {
+                if ($item['id'] == $model['id']) {
+                    $trangThaiMuaPhim = true;
+                }
             }
         }
-        return view('detail', compact('model', 'phimLienQuan','trangThai'));
+
+        return view('detail', compact('model', 'phimLienQuan','dataUser','trangThaiMuaPhim'));
     }
+
+    public function apiListFavourite(string $id)
+    {
+        $dataFavourite = session('favourite');
+
+        $json = [
+            'status' => true,
+            'msg' => 'thanh cong',
+            'data' => $dataFavourite
+        ];
+
+        return response()->json($json, 200);
+    }
+
 
 
     public function watch(string $slug, int $tap,Request $request)
@@ -90,7 +114,7 @@ class PageController extends Controller
         $favourites = session('favourite');
 
         // Tìm bộ phim theo ID
-        $movie = Movie::find($request->id);
+        $movie = Movie::find($request->movie_id);
 
         // Kiểm tra nếu bộ phim tồn tại và không có trong danh sách yêu thích
         if ($movie && !in_array($movie->id, array_column($favourites, 'id'))) {

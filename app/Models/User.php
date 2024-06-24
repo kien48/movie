@@ -42,4 +42,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function movies()
+    {
+        return $this->belongsToMany(Movie::class, 'user_movie');
+    }
+
+    public function coin()
+    {
+        return $this->hasMany(UserCoin::class);
+    }
 }

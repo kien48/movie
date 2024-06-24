@@ -23,6 +23,7 @@ class Movie extends Model
         'trang_thai',
         'list_id',
         'mo_ta',
+        'gia'
     ];
 
     public function catelogue()

@@ -13,8 +13,14 @@
             <div class="row">
                 @foreach(session('favourite') as $data)
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2 movie-card mb-3 mt-3">
-                        <a href="{{route('detail',$data->slug)}}" class="nav-link" data-bs-toggle="tooltip" title="{{$data->ten}}">
+                        <a href="{{ route('detail', $data->slug) }}" class="nav-link position-relative"
+                           data-bs-toggle="tooltip" title="{{ $data->ten }}">
                             <img src="{{$data->anh}}" alt="" class="img-fluid">
+                            @if($data->gia >= 1)
+                                <span class="badge bg-danger rounded-pill position-absolute top-0 end-0">
+                                     <i class="fa-solid fa-crown"></i> Có phí
+                                    </span>
+                            @endif
                         </a>
                     </div>
                 @endforeach

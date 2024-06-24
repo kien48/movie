@@ -37,6 +37,7 @@ class MovieController extends Controller
             'anh' => 'required|url|nullable',
             'ngon_ngu' => 'required|string|nullable',
             'so_tap' => 'required|integer|nullable',
+            'gia' => 'required|integer|nullable',
             'chat_luong' => 'required|string|nullable',
             'dao_dien' => 'required|string|nullable',
             'dien_vien' => 'required|string|nullable',
