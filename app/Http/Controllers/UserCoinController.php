@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +26,11 @@ class UserCoinController extends Controller
 
                 // Thêm phim vào danh sách phim của người dùng mà không xoá các phim đã có
                 $user->movies()->syncWithoutDetaching([$movie_id]);
-
+                Bill::query()->create([
+                    'user_id' => $user->id,
+                    'movie_id' => $movie_id,
+                    'xu'=>$coin
+                ]);
                 DB::commit();
                 return redirect()->back()->with('success', 'Đã mua phim thành công');
             } else {

@@ -4892,9 +4892,9 @@
      * @example
      * Here are some examples of creating value services.
      * ```js
-     *   $provide.value('ADMIN_USER', 'admin');
+     *   $provide.value('ADMIN_USER', 'admins');
      *
-     *   $provide.value('RoleLookup', { admin: 0, writer: 1, reader: 2 });
+     *   $provide.value('RoleLookup', { admins: 0, writer: 1, reader: 2 });
      *
      *   $provide.value('halfOf', function(value) {
      *     return value / 2;
@@ -21869,7 +21869,7 @@
      * @description Normalizes and parses a URL.
      * @returns {object} Returns the normalized URL as a dictionary.
      *
-     *   | member name   | Description                                                            |
+     *   | members name   | Description                                                            |
      *   |---------------|------------------------------------------------------------------------|
      *   | href          | A normalized version of the provided URL if it was not an absolute URL |
      *   | protocol      | The protocol without the trailing colon                                |

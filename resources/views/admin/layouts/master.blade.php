@@ -22,7 +22,7 @@
         </h2>
     </div>
     <div class="row">
-        <div class="col-4">
+        <div class="col-3">
             <div class="container mt-3">
                 <h2>Menu</h2>
                 <ul class="nav flex-column">
@@ -30,14 +30,23 @@
                         <a class="nav-link" href="{{route('admin.movies.index')}}">Phim</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Thể loại</a>
+                        <a class="nav-link" href="{{route('admin.catelogues.index')}}">Thể loại</a>
                     </li>
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                            Tài khoản
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{route('admin.admins.index')}}">Admin</a></li>
+                            <li><a class="dropdown-item" href="{{route('admin.members.index')}}">Member</a></li>
+                        </ul>
+                    </div>
 
                 </ul>
             </div>
         </div>
 
-        <div class="col-8" ng-controller="viewCtrl">
+        <div class="col-9" ng-controller="viewCtrl">
             @yield('content')
         </div>
     </div>

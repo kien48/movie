@@ -34,4 +34,6 @@ class Movie extends Model
     {
         return $this->hasMany(Episode::class);
     }
+
+
 }

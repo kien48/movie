@@ -70,7 +70,7 @@ class PageController extends Controller
         return view('detail', compact('model', 'phimLienQuan','dataUser','trangThaiMuaPhim'));
     }
 
-    public function apiListFavourite(string $id)
+    public function apiListFavourite()
     {
         $dataFavourite = session('favourite');
 

@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserCoin::class);
     }
+
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
 }

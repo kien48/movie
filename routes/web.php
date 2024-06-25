@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\Auth\AdminUserController;
+use App\Http\Controllers\Admin\Auth\MemberUserController;
+use App\Http\Controllers\Admin\CatelogueController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Auth;
@@ -26,13 +29,18 @@ Route::get('/danh-sach-phim/{id}', [App\Http\Controllers\PageController::class, 
 Route::get('/tim-kiem', [App\Http\Controllers\PageController::class, 'search'])->name('search');
 Route::post('/mua-phim', [App\Http\Controllers\UserCoinController::class, 'muaPhim'])->name('muaPhim');
 Route::get('/nap-xu', [App\Http\Controllers\UserCoinController::class, 'napXu'])->name('napXu');
+//VNpay
+Route::post('/vnpay', [App\Http\Controllers\Auth\HomeController::class, 'vnPay'])->name('vnPay');
+Route::get('/return-vnpay', [App\Http\Controllers\Auth\HomeController::class, 'return'])->name('return');
+Route::get('/success', [App\Http\Controllers\Auth\HomeController::class, 'success'])->name('success');
+Route::get('/error', [App\Http\Controllers\Auth\HomeController::class, 'error'])->name('error');
 
 Route::prefix('api')->group(function (){
 
     Route::resource('/movie', MovieController::class);
     Route::get('/comment/movie/{id}', [CommentController::class, 'index']);
     Route::resource('/comment', CommentController::class);
-    Route::get('/favourite/{id}', [\App\Http\Controllers\PageController::class, 'apiListFavourite']);
+    Route::get('/favourite', [\App\Http\Controllers\PageController::class, 'apiListFavourite']);
 });
 Auth::routes();
 Route::get('/tai-khoan', [App\Http\Controllers\Auth\HomeController::class, 'index'])->name('index');
@@ -48,8 +56,11 @@ Route::prefix('admin')
                 Route::get('/',[\App\Http\Controllers\Admin\MovieController::class,'index'])->name('index');
                 Route::get('create',[\App\Http\Controllers\Admin\MovieController::class,'create'])->name('create');
                 Route::post('store',[\App\Http\Controllers\Admin\MovieController::class,'store'])->name('store');
-
             });
+
+        Route::resource('catelogues', CatelogueController::class);
+        Route::resource('members', MemberUserController::class);
+        Route::resource('admins', AdminUserController::class);
 
 });
 

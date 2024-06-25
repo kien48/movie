@@ -18,7 +18,7 @@ class MovieController extends Controller
     //
     public function index()
     {
-        $data = Movie::query()->first('id')->paginate(5);
+        $data = Movie::query()->latest()->paginate(5);
         return view('admin.movies.index',compact('data'));
     }
 

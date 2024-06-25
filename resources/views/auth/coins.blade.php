@@ -9,12 +9,13 @@
                 Nạp Xu
             </div>
             <div class="card-body">
-                <form>
+                <form action="{{route('vnPay')}}" method="POST">
+                    @csrf
                     <div class="form-group">
                         <label for="amount">Số Lượng Xu:</label>
-                        <input type="number" class="form-control" id="amount" placeholder="Nhập số lượng xu cần nạp">
+                        <input type="number" name="coin" class="form-control" id="amount" placeholder="Nhập số lượng xu cần nạp">
                     </div>
-                    <button type="submit" class="btn btn-danger btn-block">Nạp Xu</button>
+                        <button type="submit" name="redirect" class="btn btn-danger btn-block">Thanh toán</button>
                 </form>
             </div>
         </div>

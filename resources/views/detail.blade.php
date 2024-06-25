@@ -10,13 +10,13 @@
                      style="border-radius: 10px;width: 290px;height: 450px">
                 @if($model['gia'] >= 1)
                     <span class="badge bg-danger rounded-pill position-absolute top-0 end-0">
-                                     <i class="fa-solid fa-crown"></i> Có phí
+                                     <i class="fa-solid fa-crown"></i> @if($trangThaiMuaPhim == true) Đã mua @else Có phí @endif
                                     </span>
                 @endif
             </div>
             <div class="col-9">
                 <h3 class="mb-3"
-                    style="font-weight: 700;font-size: 50px;@if($model['gia'] >= 1) color:yellow @endif">{{$model['ten']}} </h3>
+                    style="font-weight: 700;font-size: 50px;@if($model['gia'] >= 1) color:yellow @else color:red @endif">{{$model['ten']}} </h3>
                 <h5 class="font-monospace text-light-emphasis mt-3">{{$model['chat_luong']}}
                     ● {{$model['ngon_ngu']}} </h5>
                 <h5 class="font-monospace text-light-emphasis mt-3">Số tập: {{$model['so_tap']}} | Hiện
@@ -24,7 +24,7 @@
                 <h5 class="font-monospace text-light-emphasis mt-3">Thể loại:
                     @if(count($model['catelogue']) >=1)
                         @foreach($model['catelogue'] as $data)
-                            | {{$data['ten']}} |
+                           | {{$data['ten']}} |
                         @endforeach
                     @else
                         Đang cập nhật
@@ -129,11 +129,16 @@
                     <h2>Bạn có thể sẽ thích</h2>
                 </div>
                 <div class="row">
-                    @foreach($phimLienQuan as $data)
+                    @foreach($phimLienQuan as $item)
                         <div class="col-6 col-sm-4 col-md-3 col-lg-2 movie-card mb-3 mt-3">
-                            <a href="{{route('detail',$data['slug'])}}" class="nav-link" data-bs-toggle="tooltip"
-                               title="{{$data['ten']}}">
-                                <img src="{{$data['anh']}}" alt="" class="img-fluid">
+                            <a href="{{ route('detail', $item['slug']) }}" class="nav-link position-relative"
+                               data-bs-toggle="tooltip" title="{{ $item['ten'] }}">
+                                <img src="{{$item['anh']}}" alt="" class="img-fluid">
+                                @if($item['gia'] >= 1)
+                                    <span class="badge bg-danger rounded-pill position-absolute top-0 end-0">
+                                     <i class="fa-solid fa-crown"></i> Có phí
+                                    </span>
+                                @endif
                             </a>
                         </div>
                     @endforeach
@@ -215,19 +220,9 @@
                     });
                 };
 
-                {{--$scope.phimYeuThich = []--}}
-                {{--$scope.kiemTra = () => {--}}
-                {{--    $http.get('http://movie.test/api/favourite/{{$model['id']}}')--}}
-                {{--        .then(res => {--}}
-                {{--            $scope.phimYeuThich = res.data.data--}}
-                {{--            console.log($scope.phimYeuThich)--}}
-                {{--        })--}}
+                $scope.danhSachPhimYeuThich = [];
+                $scope.ketqua = false; // Biến để lưu kết quả kiểm tra
 
-
-
-                // $scope.danhSachPhimYeuThich = [];
-                // $scope.ketqua = false; // Biến để lưu kết quả kiểm tra
-                //
                 // Hàm kiểm tra danh sách phim yêu thích
                 $scope.kiemTra = () => {
                     $http.get('http://movie.test/api/favourite')

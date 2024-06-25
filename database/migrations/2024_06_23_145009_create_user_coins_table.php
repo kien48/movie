@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_coins', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(\App\Models\User::class)->constrained();
-            $table->integer('coin')->default(0);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('user_coins')) {
+            Schema::create('user_coins', function (Blueprint $table) {
+                $table->id();
+                $table->foreignIdFor(\App\Models\User::class)->constrained();
+                $table->integer('coin')->default(0);
+                $table->timestamps();
+            });
+        }
     }
 
     /**
