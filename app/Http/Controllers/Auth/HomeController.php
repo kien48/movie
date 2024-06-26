@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Bill;
 use App\Models\Comment;
 use App\Models\Payment_recharge;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserCoin;
 use Illuminate\Http\Request;
@@ -22,8 +23,8 @@ class HomeController extends Controller
     public function index()
     {
         //
+
         $data =  User::query()->with(['movies','coin'])->find(Auth::user()->id)->toArray();
-//        dd($data['movies'][0]['id']);
         return view('auth.home',compact('data'));
     }
 
@@ -113,11 +114,13 @@ class HomeController extends Controller
 
     public function return()
     {
+        $ma_giao_dich = $_GET['vnp_TxnRef'];
         $tien = $_GET['vnp_Amount'] / 100;
         $phuong_thuc = $_GET['vnp_CardType'];
         $so_giao_dich = $_GET['vnp_TransactionNo'];
         $user_id = Auth::user()->id;
         $tinh_trang_thanh_toan = ($_GET['vnp_ResponseCode'] == '00') ? 'Thành công' : 'Thất bại';
+        $coin = DB::table('user_coins')->where('user_id', $user_id)->value('coin');
 
         try {
             DB::beginTransaction();
@@ -134,7 +137,17 @@ class HomeController extends Controller
             // Nếu thanh toán thành công, cập nhật số xu cho người dùng
             if ($tinh_trang_thanh_toan == 'Thành công') {
                 DB::table('user_coins')->where('user_id', $user_id)->increment('coin', $tien);
+                DB::table('transaction_histories')->insert([
+                    'user_id' => $user_id,
+                    'truoc_giao_dich' => $coin,
+                    'sau_giao_dich' => $coin+ $tien,
+                    'bien_dong_so_du' => "+".$tien,
+                    'mo_ta'=>'Nạp tiền mã giao dịch: '.$ma_giao_dich,
+                    'ngay_tao'=>now()
+                ]);
+
             }
+
 
             DB::commit();
 
@@ -152,12 +165,22 @@ class HomeController extends Controller
 
     public function success()
     {
+        $tongXuUser = DB::table('payment_recharges')->where('user_id',Auth::user()->id)->sum('xu');
+        if($tongXuUser >= 1000000){
+            User::query()->where('id',Auth::user()->id)->update(['is_vip'=>1]);
+        }
         return view('auth.success');
     }
 
     public function error()
     {
         return view('auth.error');
+    }
+
+    public function transactions()
+    {
+        $data = DB::table('transaction_histories')->where('user_id',Auth::user()->id)->latest('id')->paginate(7);
+        return view('auth.transaction',compact('data'));
     }
 
 

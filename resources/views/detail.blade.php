@@ -12,11 +12,15 @@
                     <span class="badge bg-danger rounded-pill position-absolute top-0 end-0">
                                      <i class="fa-solid fa-crown"></i> @if($trangThaiMuaPhim == true) Đã mua @else Có phí @endif
                                     </span>
+                @elseif($model['is_vip'] == true)
+                    <span class="badge bg-warning rounded-pill position-absolute top-0 end-0">
+                                     <i class="fa-solid fa-crown"></i> Vip
+                                    </span>
                 @endif
             </div>
             <div class="col-9">
                 <h3 class="mb-3"
-                    style="font-weight: 700;font-size: 50px;@if($model['gia'] >= 1) color:yellow @else color:red @endif">{{$model['ten']}} </h3>
+                    style="font-weight: 700;font-size: 50px;@if($model['gia'] >= 1) color:red @elseif($model['is_vip'] == true) color:#fffa06 @else color:white @endif">{{$model['ten']}} </h3>
                 <h5 class="font-monospace text-light-emphasis mt-3">{{$model['chat_luong']}}
                     ● {{$model['ngon_ngu']}} </h5>
                 <h5 class="font-monospace text-light-emphasis mt-3">Số tập: {{$model['so_tap']}} | Hiện
@@ -40,34 +44,24 @@
                         <h5 class="font-monospace text-light-emphasis">Đạo diễn:</h5>
                         <h5> {{$model['dao_dien']}} </h5>
                     </div>
-                    <div class="d-flex mt-3">
-                        <h5 class="font-monospace text-light-emphasis">Giá phim:</h5>
-                        <h5> {{number_format($model['gia'])}} xu </h5>
-                    </div>
+                   @if($model['is_vip'] == 0)
+                        <div class="d-flex mt-3">
+                            <h5 class="font-monospace text-light-emphasis">Giá phim:</h5>
+                            <h5> {{number_format($model['gia'])}} xu </h5>
+                        </div>
+                    @endif
                     <div class="d-flex ">
-                        @if(isset($model['episode'][0]))
-                            @if($model['gia']==0)
-                                <div class="mt-3">
-                                    <a href="{{ route('watch', ['slug' => $model['slug'], 'tap' => $model['episode'][0]['tap']]) }}"
-                                       class="btn btn-light"
-                                       style="height: 80px; width: 170px; display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                                        <h2 style="margin: 0; display: flex; align-items: center;color: black;">
-                                            <i class="fa-solid fa-play" style="margin-right: 10px;"></i>
-                                        </h2>
-                                    </a>
-                                </div>
-                            @else
-                                @if( $trangThaiMuaPhim == false)
-                                    <div class="mt-3">
-                                        <button data-bs-toggle="modal" data-bs-target="#myModalMuaPhim"
-                                                class="btn btn-outline-warning"
-                                                style="height: 80px; width: 170px; display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                                            <h2 style="margin: 0; display: flex; align-items: center;color: white;">
-                                                <i class="fa-solid fa-bag-shopping" style="margin-right: 10px;"></i>
-                                            </h2>
-                                        </button>
-                                    </div>
-                                @else
+                        @if($is_vip == 0 && $model['is_vip'] == true)
+                            <div class="mt-3">
+                                <button class="btn btn-outline-warning" style="height: 80px; width: 170px; display: flex; align-items: center; justify-content: center;" disabled>
+                                    <h4 style="margin: 0; display: flex; align-items: center;color: white;">
+                                        Chỉ dành cho tài khoản VIP
+                                    </h4>
+                                </button>
+                            </div>
+                        @else
+                            @if(isset($model['episode'][0]))
+                                @if($model['gia'] == 0)
                                     <div class="mt-3">
                                         <a href="{{ route('watch', ['slug' => $model['slug'], 'tap' => $model['episode'][0]['tap']]) }}"
                                            class="btn btn-light"
@@ -77,18 +71,41 @@
                                             </h2>
                                         </a>
                                     </div>
+                                @else
+                                    @if($trangThaiMuaPhim == false)
+                                        <div class="mt-3">
+                                            <button data-bs-toggle="modal" data-bs-target="#myModalMuaPhim"
+                                                    class="btn btn-outline-warning"
+                                                    style="height: 80px; width: 170px; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                                <h2 style="margin: 0; display: flex; align-items: center;color: white;">
+                                                    <i class="fa-solid fa-bag-shopping" style="margin-right: 10px;"></i>
+                                                </h2>
+                                            </button>
+                                        </div>
+                                    @else
+                                        <div class="mt-3">
+                                            <a href="{{ route('watch', ['slug' => $model['slug'], 'tap' => $model['episode'][0]['tap']]) }}"
+                                               class="btn btn-light"
+                                               style="height: 80px; width: 170px; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                                <h2 style="margin: 0; display: flex; align-items: center;color: black;">
+                                                    <i class="fa-solid fa-play" style="margin-right: 10px;"></i>
+                                                </h2>
+                                            </a>
+                                        </div>
+                                    @endif
                                 @endif
+                            @else
+                                <div class="mt-3">
+                                    <a href="#" class="btn btn-warning"
+                                       style="height: 80px; width: 170px; display: flex; align-items: center; justify-content: center; text-decoration: none;">
+                                        <h2 style="margin: 0; display: flex; align-items: center;color: white;">
+                                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                                        </h2>
+                                    </a>
+                                </div>
                             @endif
-                        @else
-                            <div class="mt-3">
-                                <a href="#" class="btn btn-warning"
-                                   style="height: 80px; width: 170px; display: flex; align-items: center; justify-content: center; text-decoration: none;">
-                                    <h2 style="margin: 0; display: flex; align-items: center;color: white;">
-                                        <i class="fa-solid fa-screwdriver-wrench"></i>
-                                    </h2>
-                                </a>
-                            </div>
                         @endif
+
                         <div class="mt-3 ms-3" ng-show="ketqua === false">
                             <form action="" method="post">
                                 <button ng-click="add()" type="button" class="btn btn-outline-danger"
@@ -112,18 +129,7 @@
                     </div>
             </div>
         </div>
-        @if(isset($model['episode'][0]) && $model['gia'] ==0)
-            <div class="row mt-4">
-                <h3>Danh sách tập phim: </h3>
-                <div class="col-8">
-                    @foreach($model['episode'] as $data)
-                        <a href="{{ route('watch', ['slug' => $model['slug'], 'tap' => $data['tap']]) }}"
-                           class="btn btn-outline-danger" style="width: 45px;height: 40px">{{$data['tap']}}</a>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-        <div class="row mb-5 mt-4">
+        <div class="row mb-5 mt-5">
             <div class="col mb-1">
                 <div id="" class="d-flex justify-content-between">
                     <h2>Bạn có thể sẽ thích</h2>
@@ -137,6 +143,10 @@
                                 @if($item['gia'] >= 1)
                                     <span class="badge bg-danger rounded-pill position-absolute top-0 end-0">
                                      <i class="fa-solid fa-crown"></i> Có phí
+                                    </span>
+                                @elseif($item['is_vip'] == true)
+                                    <span class="badge bg-warning rounded-pill position-absolute top-0 end-0">
+                                     <i class="fa-solid fa-crown"></i> Vip
                                     </span>
                                 @endif
                             </a>
@@ -220,33 +230,16 @@
                     });
                 };
 
-                $scope.danhSachPhimYeuThich = [];
-                $scope.ketqua = false; // Biến để lưu kết quả kiểm tra
+                $scope.ketqua = false;
 
-                // Hàm kiểm tra danh sách phim yêu thích
                 $scope.kiemTra = () => {
-                    $http.get('http://movie.test/api/favourite')
+                    $http.get('http://movie.test/api/favourite/{{$model['slug']}}')
                         .then(res => {
-                                $scope.danhSachPhimYeuThich = res.data.data;
-                                console.log('Danh sách phim yêu thích:', $scope.danhSachPhimYeuThich);
-
-                                // Kiểm tra xem movie_id có trong danh sách phim yêu thích không
-                                const movie_id_to_check = '{{ $model["id"] }}'; // Thay bằng movie_id thực tế bạn muốn kiểm tra
-                                console.log('Kiểm tra movie_id:', movie_id_to_check); // Debug
-                                $scope.ketqua = $scope.isMovieFavorite(movie_id_to_check);
-                                console.log('Phim có id', movie_id_to_check, 'có phải là yêu thích không?', $scope.ketqua);
+                                $scope.ketqua = res.data.status;
                         }).catch(error => {
-                        console.error('Lỗi khi lấy danh sách phim yêu thích:', error);
+                        console.error(error);
                     });
                 };
-
-                // Hàm kiểm tra xem movie_id có trong danh sách phim yêu thích không
-                $scope.isMovieFavorite = movie_id => {
-                    console.log('Danh sách phim yêu thích để kiểm tra:', $scope.danhSachPhimYeuThich); // Debug
-                    return $scope.danhSachPhimYeuThich.some(movie => movie.id == movie_id); // Sử dụng == để so sánh
-                };
-
-                // Gọi hàm kiểm tra khi khởi tạo
                 $scope.kiemTra();
             };
         </script>

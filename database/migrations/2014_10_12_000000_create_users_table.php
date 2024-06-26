@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admins', 'members'])->default('members');
+            $table->boolean('is_vip')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

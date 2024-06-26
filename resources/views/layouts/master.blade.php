@@ -52,24 +52,24 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('search')}}">
-                            <button class="btn btn-outline-light"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            <button class="btn btn-outline-light border-0"><i class="fa-solid fa-magnifying-glass h4"></i></button>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="{{route('favourite')}}">
-                            <button class="btn btn-outline-danger"><i class="fa-regular fa-heart"></i></button>
+                            <button class="btn btn-outline-danger border-0"><i class="fa-regular fa-heart h4"></i></button>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#">
-                            <button data-bs-toggle="modal" data-bs-target="#myModal" class="btn btn-outline-danger"><i class="fa-solid fa-gears"></i>
-                            </button>
-                        </a>
-                    </li>
+{{--                    <li class="nav-item">--}}
+{{--                        <a class="nav-link " href="#">--}}
+{{--                            <button data-bs-toggle="modal" data-bs-target="#myModal" class="btn btn-outline-danger border-0"><i class="fa-solid fa-gears h4"></i>--}}
+{{--                            </button>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
                     @if(Auth::check())
                         <li class="nav-item">
                             <a class="nav-link " href="{{route('index')}}">
-                                <button class="btn btn-outline-light"><i
+                                <button class="btn @if(Auth::user()->is_vip == 1) btn-outline-warning @else btn-outline-light @endif"><i
                                         class="fa-solid fa-user"></i> {{Auth::user()->name}} </button>
                             </a>
                         </li>

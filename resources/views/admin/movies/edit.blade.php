@@ -23,7 +23,7 @@
                         </div>
                         <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Danh sách:</label>
-                            <select type="text" class="form-control" name="list_id" >
+                            <select type="text" class="form-control" name="list_id">
                                 <option value="">Chọn</option>
                                 @foreach($dataLists as $item)
                                     <option value="{{$item->id}}">{{$item->ten}}</option>
@@ -33,47 +33,43 @@
                         </div>
                         <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Link ảnh:</label>
-                            <input type="text" class="form-control" name="anh" value="{{old('anh')}}">
+                            <input type="text" class="form-control" name="anh">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Ngôn ngữ:</label>
-                            <input type="text" class="form-control" name="ngon_ngu" value="{{old('ngon_ngu')}}">
+                            <input type="text" class="form-control" name="ngon_ngu">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Giá phim:</label>
-                            <input type="text" class="form-control" name="gia" ng-model="gia" value="{{old('gia')}}">
+                            <input type="text" class="form-control" name="gia">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Số tập:</label>
-                            <input type="number" class="form-control" name="so_tap" value="{{old('so_tap')}}">
+                            <input type="number" class="form-control" name="so_tap" >
                         </div>
                         <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Chất lượng:</label>
-                            <input type="text" class="form-control" name="chat_luong" value="{{old('chat_luong')}}">
+                            <input type="text" class="form-control" name="chat_luong">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Đạo diễn:</label>
-                            <input type="text" class="form-control" name="dao_dien" value="{{old('dao_dien')}}">
+                            <input type="text" class="form-control" name="dao_dien">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Diễn viên:</label>
-                            <input type="text" class="form-control" name="dien_vien" value="{{old('dien_vien')}}">
+                            <input type="text" class="form-control" name="dien_vien">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Năm phát hành:</label>
-                            <input type="text" class="form-control" name="nam_phat_hanh" value="{{old('nam_phat_hanh')}}">
+                            <input type="text" class="form-control" name="nam_phat_hanh">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Quốc gia:</label>
-                            <input type="text" class="form-control" name="quoc_gia" value="{{old('quoc_gia')}}">
+                            <input type="text" class="form-control" name="quoc_gia">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="pwd" class="form-label">Mô tả:</label>
-                            <textarea class="form-control" name="mo_ta" >{{old('mo_ta')}}"</textarea>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <input class="form-check-input" type="checkbox" id="mySwitch" name="is_vip" value="1" ng-model="isVip" ng-change="updateGia()" checked>
-                            <label class="form-check-label" for="mySwitch">Phải vip không?</label>
+                            <textarea class="form-control" name="mo_ta"></textarea>
                         </div>
                     </div>
 
@@ -128,18 +124,9 @@
                     $scope.episodes.splice(index, 1);
                 };
 
-                $scope.isVip = false;
-                $scope.gia = '';
-                $scope.updateGia = function() {
-                    if ($scope.isVip) {
-                        $scope.gia = 0;
-                    } else {
-                        $scope.gia = '';
-                    }
-                };
-
             }
         </script>
     @endsection
 
 @endsection
+

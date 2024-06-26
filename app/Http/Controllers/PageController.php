@@ -46,7 +46,7 @@ class PageController extends Controller
             ->where('slug', $slug)
             ->firstOrFail()
             ->toArray();
-
+        $is_vip = Auth::user()->is_vip;
         $list_id = $model['list_id'];
 
         $phimLienQuan = Movie::query()
@@ -67,18 +67,27 @@ class PageController extends Controller
             }
         }
 
-        return view('detail', compact('model', 'phimLienQuan','dataUser','trangThaiMuaPhim'));
+        return view('detail', compact('model', 'phimLienQuan','dataUser','trangThaiMuaPhim','is_vip'));
     }
 
-    public function apiListFavourite()
+    public function apiListFavourite(string $slug)
     {
         $dataFavourite = session('favourite');
+        $movie = collect($dataFavourite)->firstWhere('slug', $slug);
 
-        $json = [
-            'status' => true,
-            'msg' => 'thanh cong',
-            'data' => $dataFavourite
-        ];
+        if ($movie) {
+            $json = [
+                'status' => true,
+                'msg' => 'thanh cong',
+                'data' => $movie
+            ];
+        } else {
+            $json = [
+                'status' => false,
+                'msg' => 'Phim không tìm thấy',
+                'data' => null
+            ];
+        }
 
         return response()->json($json, 200);
     }

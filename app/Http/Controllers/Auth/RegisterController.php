@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserCoin;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -63,10 +65,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        // Tạo người dùng mới
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        // Kiểm tra và xử lý nếu cần thiết trước khi tạo user_coins
+        if ($user) {
+            // Tạo bản ghi mới trong bảng user_coins
+            UserCoin::create([
+                'user_id' => $user->id,
+                'coin' => 0 // Giá trị coin ban đầu có thể là 0 hoặc giá trị mặc định khác
+            ]);
+        }
+
+        return $user;
     }
+
 }

@@ -20,6 +20,10 @@
                                 <span class="badge bg-danger rounded-pill position-absolute top-0 end-0">
                                      <i class="fa-solid fa-crown"></i> Có phí
                                     </span>
+                            @elseif($data->is_vip == true)
+                                <span class="badge bg-warning rounded-pill position-absolute top-0 end-0">
+                                     <i class="fa-solid fa-crown"></i> Vip
+                                    </span>
                             @endif
                         </a>
                     </div>

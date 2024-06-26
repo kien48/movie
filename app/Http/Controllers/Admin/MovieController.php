@@ -18,7 +18,7 @@ class MovieController extends Controller
     //
     public function index()
     {
-        $data = Movie::query()->latest()->paginate(5);
+        $data = Movie::query()->latest()->paginate(6);
         return view('admin.movies.index',compact('data'));
     }
 
@@ -43,10 +43,8 @@ class MovieController extends Controller
             'dien_vien' => 'required|string|nullable',
             'nam_phat_hanh' => 'required|string|nullable',
             'quoc_gia' => 'required|string|nullable',
-            'trang_thai' =>'required|string|nullable',
             'mo_ta' => 'required|string|nullable',
-            'catelogue_id' => 'required|array', // Giả sử là một mảng các ID
-            'catelogue_id.*' => 'exists:catelogues,id', // Mỗi ID trong mảng phải tồn tại trong bảng catelogues
+            'catelogue_id' => 'required|array'
         ]);
 
         // Nếu validation không thành công, quay lại form và hiển thị lỗi
@@ -60,7 +58,7 @@ class MovieController extends Controller
         // Lấy dữ liệu phim, ngoại trừ các trường 'catelogue_id' và 'tap_phim'
         $dataMovie = $request->except('catelogue_id', 'tap_phim');
         $dataMovie['slug'] = Str::slug($dataMovie['ten']); // Thêm \Illuminate\Support\ để sử dụng Str
-
+        $dataMovie['is_vip'] = isset($request->is_vip) ? 1 : 0;
         // Lấy dữ liệu tập phim
         $dataTapPhimTmp = $request->tap_phim;
         $dataTapPhim = [];
@@ -70,13 +68,16 @@ class MovieController extends Controller
                 'link' => $value['link']
             ];
         }
-
+        if(count($dataTapPhim) == $dataMovie['so_tap']){
+            $dataMovie['trang_thai'] = "Full";
+        }else{
+            $dataMovie['trang_thai'] = "Đang cập nhật";
+        }
         try {
             // Bắt đầu transaction
             DB::beginTransaction();
 
             // Tạo phim mới
-            /** @var Movie $movie */
             $movie = Movie::query()->create($dataMovie);
 
             // Tạo các tập phim mới liên kết với phim vừa tạo
@@ -101,5 +102,10 @@ class MovieController extends Controller
             return back()->withErrors(['error' => $exception->getMessage()]);
         }
     }
+
+//    public function ()
+//    {
+//
+//    }
 
 }

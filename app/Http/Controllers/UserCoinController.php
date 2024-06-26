@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bill;
+use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,11 +14,14 @@ class UserCoinController extends Controller
     public function muaPhim(Request $request)
     {
         $movie_id = $request->movie_id;
+        $movie = Movie::query()->find($movie_id);
+        $ten_movie = $movie->ten;
         $coin = (int) $request->coin; // Đảm bảo rằng $coin là số nguyên
         $user = Auth::user();
+        $user_coin = DB::table('user_coins')->where('user_id', $user->id)->value('coin');
+
         try {
             DB::beginTransaction();
-
             // Kiểm tra số dư coin của người dùng
             if ($user->coin[0]['coin'] >= $coin) {
                 // Trừ số coin từ số dư của người dùng
@@ -30,6 +34,14 @@ class UserCoinController extends Controller
                     'user_id' => $user->id,
                     'movie_id' => $movie_id,
                     'xu'=>$coin
+                ]);
+                DB::table('transaction_histories')->insert([
+                    'user_id' => $user->id,
+                    'truoc_giao_dich' => $user_coin,
+                    'sau_giao_dich' => $user_coin - $coin,
+                    'bien_dong_so_du' => '-'.$coin,
+                    'mo_ta'=>'Mua phim: '.$ten_movie,
+                    'ngay_tao'=>now()
                 ]);
                 DB::commit();
                 return redirect()->back()->with('success', 'Đã mua phim thành công');

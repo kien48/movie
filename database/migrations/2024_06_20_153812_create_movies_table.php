@@ -19,13 +19,14 @@ return new class extends Migration
             $table->text('slug');
             $table->text('mo_ta');
             $table->text('ngon_ngu');
-            $table->text('so_tap');
+            $table->enum('trang_thai',['Full','Đang cập nhật'])->default('Đang cập nhật');
             $table->text('chat_luong');
             $table->text('dao_dien');
             $table->text('dien_vien');
             $table->text('nam_phat_hanh');
             $table->text('quoc_gia');
-            $table->text('trang_thai');
+            $table->text('so_tap');
+            $table->boolean('is_vip')->default(0);
             $table->bigInteger('gia')->default(0);
             $table->timestamps();
         });

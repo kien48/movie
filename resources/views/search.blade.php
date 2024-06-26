@@ -56,6 +56,9 @@
                                 <span ng-show="item.gia >=1" class="badge bg-danger rounded-pill position-absolute top-0 end-0">
                                      <i class="fa-solid fa-crown"></i> Có phí
                                     </span>
+                                <span ng-show="item.is_vip == true" class="badge bg-warning rounded-pill position-absolute top-0 end-0">
+                                     <i class="fa-solid fa-crown"></i> Vip
+                                    </span>
                         </a>
                     </div>
                 </div>

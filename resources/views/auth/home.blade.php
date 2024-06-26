@@ -33,10 +33,10 @@
                         Thông Tin Tài Khoản
                     </div>
                     <div class="card-body">
-                        <p class="info-item text-white mt-3"><strong>Số
+                        <p class="info-item text-white mt-3" ><strong>Số
                                 Xu:</strong> {{isset($data['coin'][0]['coin']) ? number_format($data['coin'][0]['coin']) : 0}}
-                            xu</p>
-                        <p class="info-item text-white mt-3"><strong>Hạng Thành Viên:</strong> VIP</p>
+                            xu <a href="{{route('transactions')}}">Lịch sử giao dịch</a></p>
+                        <p class="info-item text-white mt-3"><strong>Hạng Thành Viên:</strong> @if($data['is_vip'] ==1) VIP @else Thường @endif</p>
                         <a href="{{route('napXu')}}" class="btn btn-outline-primary mt-3 w-100 btn-lg">Nạp xu</a>
                         <a href="{{route('purchasedMovies')}}" class="btn btn-outline-success mt-3 w-100 btn-lg">Phim đã
                             mua</a>

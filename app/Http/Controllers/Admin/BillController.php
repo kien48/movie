@@ -3,22 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Catelogue;
+use App\Models\Bill;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Psy\Util\Str;
 
-class CatelogueController extends Controller
+class BillController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-
-    const PATH_VIEW = "admin.catelogues.";
+    const PATH_VIEW = "admin.bills.";
     public function index()
     {
         //
-        $data = Catelogue::query()->latest('id')->paginate(7);
+        $data = Bill::query()->latest('id')->paginate(8);
         return view(self::PATH_VIEW.__FUNCTION__,compact('data'));
     }
 
@@ -28,7 +25,6 @@ class CatelogueController extends Controller
     public function create()
     {
         //
-        return view(self::PATH_VIEW.__FUNCTION__);
     }
 
     /**
@@ -37,21 +33,6 @@ class CatelogueController extends Controller
     public function store(Request $request)
     {
         //
-        $validator = Validator::make($request->all(),
-        [
-            'ten' => 'required|string|max:255'
-        ]
-        );
-
-        if($validator->fails()){
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $data = $request->all();
-        $ten = $data['ten'];
-        $data['slug'] =  \Illuminate\Support\Str::slug($ten);
-        Catelogue::query()->create($data);
-        return redirect()->route('admin.catelogues.index');
     }
 
     /**

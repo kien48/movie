@@ -32,6 +32,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('admin.catelogues.index')}}">Thể loại</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.payments.index')}}">Lịch sử nạp xu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.bills.index')}}">Hóa đơn mua phim</a>
+                    </li>
                     <div class="dropdown">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
                             Tài khoản

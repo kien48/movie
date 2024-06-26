@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class  Catelogue extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'ten',
+        'slug'
+    ];
 
     public function movies()
     {
