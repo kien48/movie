@@ -16,17 +16,19 @@ use Illuminate\Support\Str;
 class MovieController extends Controller
 {
     //
+
+    const PATH_VIEW = "admin.movies.";
     public function index()
     {
-        $data = Movie::query()->latest()->paginate(6);
-        return view('admin.movies.index',compact('data'));
+        $data = Movie::query()->latest('id')->paginate(6);
+        return view(self::PATH_VIEW.__FUNCTION__,compact('data'));
     }
 
     public function create()
     {
         $dataCatelogues = Catelogue::query()->get();
         $dataLists = Lists::query()->get();
-        return view('admin.movies.create',compact('dataCatelogues','dataLists'));
+        return view(self::PATH_VIEW.__FUNCTION__,compact('dataCatelogues','dataLists'));
     }
     public function store(Request $request)
     {
@@ -99,13 +101,122 @@ class MovieController extends Controller
         } catch (\Exception $exception) {
             // Rollback transaction nếu có lỗi
             DB::rollBack();
+            return back();
+        }
+    }
+
+    public function show(string $slug)
+    {
+        $modelMovie = Movie::query()->with(['catelogue', 'episode', 'lists'])->where('slug', $slug)->firstOrFail()->toArray();
+        $modelCatelogue = $modelMovie['catelogue'];
+        $modelEpisode = $modelMovie['episode'];
+
+       return view(self::PATH_VIEW.__FUNCTION__,compact('modelMovie','modelCatelogue','modelEpisode'));
+    }
+    public function edit(string $slug)
+    {
+        $modelMovie = Movie::query()->with(['catelogue', 'episode', 'lists'])->where('slug', $slug)->firstOrFail()->toArray();
+        $modelCatelogue = $modelMovie['catelogue'];
+        $modelEpisode = $modelMovie['episode'];
+        $dataCatelogues = Catelogue::query()->get();
+        $dataLists = Lists::query()->get();
+        return view(self::PATH_VIEW.__FUNCTION__,compact('dataCatelogues','dataLists','modelMovie','modelCatelogue','modelEpisode'));
+    }
+
+    public function apiEpisode(string $slug)
+    {
+        $modelMovie = Movie::query()->with(['catelogue', 'episode', 'lists'])->where('slug', $slug)->firstOrFail()->toArray();
+        $modelEpisode = $modelMovie['episode'];
+        $json = [
+            'data' => $modelEpisode
+        ];
+        return response()->json($json,200);
+    }
+    public function update(string $slug, Request $request)
+    {
+        // Định nghĩa các luật kiểm tra
+        $validator = Validator::make($request->all(), [
+            'ten' => 'required|string|max:255',
+            'list_id' => 'required|exists:lists,id',
+            'anh' => 'nullable|url',
+            'ngon_ngu' => 'nullable|string',
+            'so_tap' => 'nullable|integer',
+            'gia' => 'nullable|integer',
+            'chat_luong' => 'nullable|string',
+            'dao_dien' => 'nullable|string',
+            'dien_vien' => 'nullable|string',
+            'nam_phat_hanh' => 'nullable|string',
+            'quoc_gia' => 'nullable|string',
+            'mo_ta' => 'nullable|string',
+            'tap_phim.*.so' => 'required|integer',
+            'catelogue_id' => 'required|array',
+        ]);
+
+        // Nếu validation không thành công, quay lại với thông báo lỗi và dữ liệu đã nhập
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        try {
+            // Bắt đầu giao dịch
+            DB::beginTransaction();
+
+            // Tìm phim dựa vào slug
+            $movie = Movie::where('slug', $slug)->firstOrFail();
+
+            // Cập nhật thông tin phim
+            $movie->update([
+                'ten' => $request->input('ten'),
+                'list_id' => $request->input('list_id'),
+                'anh' => $request->input('anh'),
+                'ngon_ngu' => $request->input('ngon_ngu'),
+                'so_tap' => $request->input('so_tap'),
+                'gia' => $request->input('gia'),
+                'chat_luong' => $request->input('chat_luong'),
+                'dao_dien' => $request->input('dao_dien'),
+                'dien_vien' => $request->input('dien_vien'),
+                'nam_phat_hanh' => $request->input('nam_phat_hanh'),
+                'quoc_gia' => $request->input('quoc_gia'),
+                'mo_ta' => $request->input('mo_ta'),
+                'is_vip' => $request->has('is_vip') ? 1 : 0,
+                'trang_thai' => (count($request->input('tap_phim')) -1) == $request->input('so_tap') ? 'Full' : 'Đang cập nhật',
+            ]);
+
+            // Cập nhật hoặc tạo mới các tập phim
+            $tapPhimData = [];
+            foreach ($request->input('tap_phim') as $tap) {
+                // Đảm bảo link không null trước khi thêm vào tapPhimData
+                if (!empty($tap['link'])) {
+                    $tapPhimData[] = [
+                        'tap' => $tap['so'],
+                        'link' => $tap['link'],
+                        'movie_id' => $movie->id,
+                    ];
+                }
+            }
+            // Xóa các tập phim hiện có liên quan đến phim này
+            Episode::where('movie_id', $movie->id)->delete();
+            // Thêm các tập phim mới vào
+            Episode::insert($tapPhimData);
+
+            // Đồng bộ hóa danh mục phim
+            $movie->catelogue()->sync($request->input('catelogue_id'));
+
+            // Xác nhận giao dịch thành công
+            DB::commit();
+
+            // Chuyển hướng đến route admin.movies.index
+            return redirect()->route('admin.movies.index');
+        } catch (\Exception $exception) {
+            // Quay lại trang trước đó nếu có lỗi xảy ra và thông báo lỗi
+            DB::rollBack();
             return back()->withErrors(['error' => $exception->getMessage()]);
         }
     }
 
-//    public function ()
-//    {
-//
-//    }
+
+
 
 }

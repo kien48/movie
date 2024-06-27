@@ -46,7 +46,10 @@ class PageController extends Controller
             ->where('slug', $slug)
             ->firstOrFail()
             ->toArray();
-        $is_vip = Auth::user()->is_vip;
+        $is_vip = 0;
+        if(Auth::check()){
+            $is_vip = Auth::user()->is_vip;
+        }
         $list_id = $model['list_id'];
 
         $phimLienQuan = Movie::query()

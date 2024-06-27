@@ -35,6 +35,10 @@ class Movie extends Model
     {
         return $this->hasMany(Episode::class);
     }
+    public function lists()
+    {
+        return $this->belongsTo(Lists::class, 'list_id', 'id');
+    }
 
 
 }

@@ -1,4 +1,4 @@
-@extends('admin.layouts.master');
+@extends('admin.layouts.master')
 @section('content')
     <h1 class="text-center h3">Danh sách hóa đơn nạp xu</h1>
     <table class="table table-striped table-bordered">
@@ -28,7 +28,7 @@
                 <td>{{$payment->id}}</td>
                 <td>{{$payment->so_giao_dich}}</td>
                 <td>{{$payment->user_id}}</td>
-                <td>{{$payment->xu}}</td>
+                <td>{{number_format($payment->xu)}} xu</td>
                 <td>{{$payment->phuong_thuc_thanh_toan}}</td>
                 <td>{{$payment->tinh_trang_thanh_toan}}</td>
                 <td>{{$payment->created_at}}</td>

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Auth\AdminUserController;
 use App\Http\Controllers\Admin\Auth\MemberUserController;
 use App\Http\Controllers\Admin\BillController;
 use App\Http\Controllers\Admin\CatelogueController;
+use App\Http\Controllers\Admin\CateloguePostController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MovieController;
@@ -46,6 +47,9 @@ Route::prefix('api')->group(function (){
     Route::get('/comment/movie/{id}', [CommentController::class, 'index']);
     Route::resource('/comment', CommentController::class);
     Route::get('/favourite/{slug}', [PageController::class, 'apiListFavourite']);
+    Route::get('/episode/{slug}', [\App\Http\Controllers\Admin\MovieController::class, 'apiEpisode']);
+
+
 });
 Auth::routes();
 Route::get('/tai-khoan', [App\Http\Controllers\Auth\HomeController::class, 'index'])->name('index');
@@ -61,7 +65,10 @@ Route::prefix('admin')
                 Route::get('/',[\App\Http\Controllers\Admin\MovieController::class,'index'])->name('index');
                 Route::get('create',[\App\Http\Controllers\Admin\MovieController::class,'create'])->name('create');
                 Route::post('store',[\App\Http\Controllers\Admin\MovieController::class,'store'])->name('store');
-                Route::get('{id}/edit',[\App\Http\Controllers\Admin\MovieController::class,'edit'])->name('edit');
+                Route::get('{slug}/show',[\App\Http\Controllers\Admin\MovieController::class,'show'])->name('show');
+                Route::get('{slug}/edit',[\App\Http\Controllers\Admin\MovieController::class,'edit'])->name('edit');
+                Route::put('{slug}/update',[\App\Http\Controllers\Admin\MovieController::class,'update'])->name('update');
+
             });
 
         Route::resource('catelogues', CatelogueController::class);
@@ -69,6 +76,7 @@ Route::prefix('admin')
         Route::resource('admins', AdminUserController::class);
         Route::resource('payments', PaymentController::class);
         Route::resource('bills', BillController::class);
+        Route::resource('catelogue-posts', CateloguePostController::class);
 
 });
 

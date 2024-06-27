@@ -1,4 +1,4 @@
-@extends('admin.layouts.master');
+@extends('admin.layouts.master')
 @section('content')
     <h1 class="text-center h3">Danh sách phim</h1>
     <a href="{{route('admin.movies.create')}}" class="btn btn-primary">Thêm mới</a>
@@ -29,8 +29,8 @@
                 <td>{{$movie->quoc_gia}}</td>
                 <td>{{$movie->trang_thai}}</td>
                 <td class="text-nowrap" style="width: 1px;">
-                    <a href="http://" class="btn btn-outline-info">Xem</a>
-                    <a href="http://" class="btn btn-outline-warning">Sửa</a>
+                    <a href="{{route('admin.movies.show',$movie->slug)}}" class="btn btn-outline-info">Xem</a>
+                    <a href="{{route('admin.movies.edit',$movie->slug)}}" class="btn btn-outline-warning">Sửa</a>
                     <a href="http://" class="btn btn-outline-danger">Xóa</a>
                 </td>
             </tr>

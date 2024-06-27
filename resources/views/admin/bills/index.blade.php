@@ -1,6 +1,6 @@
-@extends('admin.layouts.master');
+@extends('admin.layouts.master')
 @section('content')
-    <h1 class="text-center h3">Danh sách hóa đơn nạp xu</h1>
+    <h1 class="text-center h3">Danh sách hóa đơn mua phim</h1>
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
@@ -18,7 +18,7 @@
                 <td>{{$bill->id}}</td>
                 <td>{{$bill->user_id}}</td>
                 <td>{{$bill->movie_id}}</td>
-                <td>{{$bill->xu}}</td>
+                <td>{{number_format($bill->xu)}} xu</td>
                 <td>{{$bill->created_at}}</td>
             </tr>
         @endforeach

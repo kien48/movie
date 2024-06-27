@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('transaction_histories')) {
-            Schema::create('transaction_histories', function (Blueprint $table) {
+        if (!Schema::hasTable('posts')) {
+            Schema::create('posts', function (Blueprint $table) {
                 $table->id();
+                $table->string('tieu_de');
+                $table->text('noi_dung');
+                $table->string('anh')->nullable();
+                $table->bigInteger('luot_xem')->default(0);
                 $table->foreignIdFor(\App\Models\User::class)->constrained();
-                $table->bigInteger('truoc_giao_dich');
-                $table->bigInteger('sau_giao_dich');
-                $table->string('bien_dong_so_du', 50);
-                $table->text('mo_ta');
-                $table->timestamps('ngay_tao');
+                $table->foreignIdFor(\App\Models\CateloguePost::class)->constrained();
                 $table->timestamps();
             });
         }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transaction_histories');
+        Schema::dropIfExists('posts');
     }
 };
